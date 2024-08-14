@@ -13,7 +13,7 @@ function Profile() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const response = await api.get('/usuario');
+        const response = await api.get('/aluno');
         const userData = response.data;
         setUser(userData);
         inputName.current.value = userData.nome;
@@ -29,7 +29,7 @@ function Profile() {
 
   async function updateUser() {
     try {
-      await api.put('/usuario', {
+      await api.put('/aluno', {
         usuario: inputUser.current.value,
         senha: inputSenha.current.value,
         nome: inputName.current.value,
