@@ -1,6 +1,7 @@
 import api from '../../services/api';
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './login.css'
 
 function Login() {
   const inputUser = useRef();
@@ -26,7 +27,7 @@ function Login() {
   }
 
   return (
-    <div>
+    <div className='container'>
       <h1>Login</h1>
       <input ref={inputUser} placeholder="Usuário" />
       <input ref={inputSenha} placeholder="Senha" type="password" />

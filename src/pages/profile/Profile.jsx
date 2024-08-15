@@ -1,6 +1,6 @@
 import api from '../../services/api';
 import React, { useEffect, useState, useRef } from 'react';
-
+import './profile.css'
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -42,10 +42,8 @@ function Profile() {
     }
   }
 
-  if (!user) return <p>Carregando...</p>;
-
   return (
-    <div>
+    <div className='container'>
       <h1>Perfil</h1>
       <input ref={inputName} placeholder="Nome" />
       <input ref={inputCpf} placeholder="CPF" />
