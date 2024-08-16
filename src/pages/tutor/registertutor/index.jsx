@@ -1,9 +1,8 @@
-// src/pages/Register.jsx
 import React, { useEffect, useState, useRef } from 'react';
-import api from '../../services/api';
+import api from '../../../services/api';
 import './style.css';
 
-function Register() {
+function Registertutor() {
   const [users, setUsers] = useState([]);
 
   const inputName = useRef();
@@ -17,7 +16,7 @@ function Register() {
 
   async function getUsers() {
     try {
-      const response = await api.get('/aluno');
+      const response = await api.get('/tutor');
       setUsers(response.data);
       console.log('Data fetched:', response.data);
     } catch (error) {
@@ -27,7 +26,7 @@ function Register() {
 
   async function createUsers() {
     try {
-      await api.post('/aluno', {
+      await api.post('/tutor', {
         usuario: inputUser.current.value,
         senha: inputSenha.current.value,
         nome: inputName.current.value,
@@ -42,7 +41,7 @@ function Register() {
 
   async function deleteUsers(id) {
     try {
-      await api.delete(`/aluno/${id}`);
+      await api.delete(`/tutor/${id}`);
       getUsers(); // Atualiza a lista de usuários
     } catch (error) {
       console.error('Erro ao deletar usuário:', error);
@@ -52,7 +51,7 @@ function Register() {
 
   return (
     <div className="container">
-  <h1>Cadastro</h1>
+  <h1>Cadastro Professor</h1>
   <form>
     <input ref={inputName} placeholder="Nome" />
     <input ref={inputCpf} placeholder="CPF" />
@@ -61,11 +60,12 @@ function Register() {
     <button onClick={createUsers}>Registrar</button>
   </form>
 
-  <h2>Usuários Registrados:</h2>
+  <h2>Professores Registrados:</h2>
   <ul>
     {users.map((user) => (
       <li key={user.id} className="card">
         <p>{user.nome}</p>
+        <p>{user.cpf}</p>
         <p>{user.cpf}</p>
         <button onClick={() => deleteUsers(user.id)}>Deletar</button>
       </li>
@@ -76,4 +76,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Registertutor;

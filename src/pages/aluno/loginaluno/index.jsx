@@ -1,7 +1,7 @@
-import api from '../../services/api';
+import api from '../../../services/api';
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './login.css'
+import './style.css'
 
 function Login() {
   const inputUser = useRef();

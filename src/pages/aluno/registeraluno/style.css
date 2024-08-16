@@ -72,7 +72,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #103421;
+    background-color: #61dafb;
     margin: 10px 0;
     padding: 10px;
     width: 300px;
@@ -82,14 +82,18 @@ body {
   .card p {
     color: #fff;
     font-weight: bold;
+    margin: 10px;
   }
   
   .card button {
-    background-color: transparent;
-    color: #61dafb;
-    border: none;
+
+    background-color: white;
+    color: #4d6268;
+    border-radius: 10;
     cursor: pointer;
     font-size: 16px;
+    margin: 5px;
+    
   }
   
   .card button:hover {
