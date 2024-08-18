@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import api from '../../../services/api';
+import { useTutores } from '../../../context/tutorescontext';
 import './style.css';
 
-function Registertutor() {
-  const [users, setUsers] = useState([]);
+function RegisterTutor() {
+  const { listaTutores, atualizarTutores, adicionarTutor, removerTutor } = useTutores();
 
   const inputName = useRef();
   const inputCpf = useRef();
@@ -11,69 +12,88 @@ function Registertutor() {
   const inputSenha = useRef();
 
   useEffect(() => {
-    getUsers();
+    getTutores();
   }, []);
 
-  async function getUsers() {
+  async function getTutores() {
     try {
       const response = await api.get('/tutor');
-      setUsers(response.data);
+      atualizarTutores(response.data.map(tutor => ({
+        id: tutor.id.toString(),
+        nome: tutor.nome,
+        cpf: tutor.cpf,
+        usuario: tutor.usuario,
+        senha: tutor.senha
+      })));
       console.log('Data fetched:', response.data);
     } catch (error) {
-      console.error('Erro ao buscar usuários:', error);
+      console.error('Erro ao buscar tutores:', error);
     }
   }
 
-  async function createUsers() {
+  async function createTutor() {
     try {
-      await api.post('/tutor', {
+      const newTutor = {
         usuario: inputUser.current.value,
         senha: inputSenha.current.value,
         nome: inputName.current.value,
         cpf: inputCpf.current.value,
+      };
+
+      const response = await api.post('/tutor', newTutor);
+
+      const createdTutor = response.data;
+
+      adicionarTutor({
+        id: createdTutor.id,  // Usa o ID gerado pelo banco
+        nome: newTutor.nome,
+        cpf: newTutor.cpf,
+        usuario: newTutor.usuario,
+        senha: newTutor.senha
       });
-      getUsers(); // Atualiza a lista de usuários
+
+      getTutores(); // Atualiza a lista de tutores no estado
+
     } catch (error) {
-      console.error('Erro ao criar usuário:', error);
-      alert('Erro ao criar usuário!');
+      console.error('Erro ao criar tutor:', error);
+      alert('Erro ao criar tutor!');
     }
   }
 
-  async function deleteUsers(id) {
+  async function deleteTutor(id) {
     try {
       await api.delete(`/tutor/${id}`);
-      getUsers(); // Atualiza a lista de usuários
+      removerTutor(id);
+      getTutores(); // Atualiza a lista de tutores no estado
     } catch (error) {
-      console.error('Erro ao deletar usuário:', error);
-      alert('Erro ao deletar usuário!');
+      console.error('Erro ao deletar tutor:', error);
+      alert('Erro ao deletar tutor!');
     }
   }
 
   return (
     <div className="container">
-  <h1>Cadastro Professor</h1>
-  <form>
-    <input ref={inputName} placeholder="Nome" />
-    <input ref={inputCpf} placeholder="CPF" />
-    <input ref={inputUser} placeholder="Usuário" />
-    <input ref={inputSenha} placeholder="Senha" type="password" />
-    <button onClick={createUsers}>Registrar</button>
-  </form>
+      <h1>Cadastro Professor</h1>
+      <form>
+        <input ref={inputName} placeholder="Nome" />
+        <input ref={inputCpf} placeholder="CPF" />
+        <input ref={inputUser} placeholder="Usuário" />
+        <input ref={inputSenha} placeholder="Senha" type="password" />
+        <button type="button" onClick={createTutor}>Registrar</button>
+      </form>
 
-  <h2>Professores Registrados:</h2>
-  <ul>
-    {users.map((user) => (
-      <li key={user.id} className="card">
-        <p>{user.nome}</p>
-        <p>{user.cpf}</p>
-        <p>{user.cpf}</p>
-        <button onClick={() => deleteUsers(user.id)}>Deletar</button>
-      </li>
-    ))}
-  </ul>
-</div>
-
+      <h2>Professores Registrados:</h2>
+      <ul>
+        {listaTutores.map(tutor => (
+          <li key={tutor.id} className="card">
+            <p>{tutor.nome}</p>
+            <p>{tutor.cpf}</p>
+            <button onClick={() => deleteTutor(tutor.id)}>Deletar</button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
-export default Registertutor;
+export default RegisterTutor;
