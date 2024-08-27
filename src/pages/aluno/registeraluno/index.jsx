@@ -6,9 +6,10 @@ import './style.css';
 function Registeraluno() {
   const { listaAlunos, atualizarAlunos, adicionarAluno, removerAluno } = useAlunos();
 
-  const inputName = useRef();
+  const inputEmail = useRef();
   const inputCpf = useRef();
   const inputUser = useRef();
+  const inputName = useRef();
   const inputSenha = useRef();
 
   useEffect(() => {
@@ -20,9 +21,10 @@ function Registeraluno() {
       const response = await api.get('/aluno');
       atualizarAlunos(response.data.map(user => ({
         id: user.id.toString(),
-        nome: user.nome,
+        email: user.email,
         cpf: user.cpf,
         usuario: user.usuario,
+        nome: user.nome,
         senha: user.senha
       })));
       console.log('Data fetched:', response.data);
@@ -34,10 +36,11 @@ function Registeraluno() {
   async function createUsers() {
     try {
       const newUser = {
-        usuario: inputUser.current.value,
-        senha: inputSenha.current.value,
-        nome: inputName.current.value,
+        email: inputEmail.current.value,
         cpf: inputCpf.current.value,
+        usuario: inputUser.current.value,
+        nome: inputName.current.value,
+        senha: inputSenha.current.value,
       };
 
       await api.post('/aluno', newUser);
@@ -45,9 +48,10 @@ function Registeraluno() {
 
       adicionarAluno({
         id: newUser.usuario,  // ou algum outro identificador único
-        nome: newUser.nome,
+        email: newUser.email,
         cpf: newUser.cpf,
         usuario: newUser.usuario,
+        nome: newUser.nome,
         senha: newUser.senha
       });
 
@@ -76,6 +80,7 @@ function Registeraluno() {
       <form>
         <input ref={inputName} placeholder="Nome" />
         <input ref={inputCpf} placeholder="CPF" />
+        <input ref={inputEmail} placeholder="E-mail" />
         <input ref={inputUser} placeholder="Usuário" />
         <input ref={inputSenha} placeholder="Senha" type="password" />
         <button type="button" onClick={createUsers}>Registrar</button>
