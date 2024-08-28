@@ -39,11 +39,12 @@ function Registeraluno() {
         email: inputEmail.current.value,
         cpf: inputCpf.current.value,
         usuario: inputUser.current.value,
-        nome: inputName.current.value,
-        senha: inputSenha.current.value,
+        name: inputName.current.value,
+        password: inputSenha.current.value,
+        tipoUsuario: "aluno"
       };
 
-      await api.post('/aluno', newUser);
+      await api.post('/cadastro', newUser);
       getUsers(); // Atualiza a lista de usuários
 
       adicionarAluno({

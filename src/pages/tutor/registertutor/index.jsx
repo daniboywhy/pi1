@@ -6,9 +6,10 @@ import './style.css';
 function RegisterTutor() {
   const { listaTutores, atualizarTutores, adicionarTutor, removerTutor } = useTutores();
 
-  const inputName = useRef();
+  const inputEmail = useRef();
   const inputCpf = useRef();
   const inputUser = useRef();
+  const inputName = useRef();
   const inputSenha = useRef();
 
   useEffect(() => {
@@ -20,6 +21,7 @@ function RegisterTutor() {
       const response = await api.get('/tutor');
       atualizarTutores(response.data.map(tutor => ({
         id: tutor.id.toString(),
+        email: tutor.email,  // Novo campo adicionado
         nome: tutor.nome,
         cpf: tutor.cpf,
         usuario: tutor.usuario,
@@ -34,18 +36,21 @@ function RegisterTutor() {
   async function createTutor() {
     try {
       const newTutor = {
-        usuario: inputUser.current.value,
-        senha: inputSenha.current.value,
-        nome: inputName.current.value,
+        email: inputEmail.current.value,  // Novo campo adicionado
         cpf: inputCpf.current.value,
+        usuario: inputUser.current.value,
+        name: inputName.current.value,
+        password: inputSenha.current.value,
+        tipoUsuario: "tutor"
       };
 
-      const response = await api.post('/tutor', newTutor);
+      const response = await api.post('/cadastro', newTutor);
 
       const createdTutor = response.data;
 
       adicionarTutor({
         id: createdTutor.id,  // Usa o ID gerado pelo banco
+        email: newTutor.email,  // Novo campo adicionado
         nome: newTutor.nome,
         cpf: newTutor.cpf,
         usuario: newTutor.usuario,
@@ -77,6 +82,7 @@ function RegisterTutor() {
       <form>
         <input ref={inputName} placeholder="Nome" />
         <input ref={inputCpf} placeholder="CPF" />
+        <input ref={inputEmail} placeholder="E-mail" />  {/* Novo campo adicionado */}
         <input ref={inputUser} placeholder="Usuário" />
         <input ref={inputSenha} placeholder="Senha" type="password" />
         <button type="button" onClick={createTutor}>Registrar</button>
@@ -88,6 +94,7 @@ function RegisterTutor() {
           <li key={tutor.id} className="card">
             <p>{tutor.nome}</p>
             <p>{tutor.cpf}</p>
+            <p>{tutor.email}</p>  {/* Novo campo adicionado */}
             <button onClick={() => deleteTutor(tutor.id)}>Deletar</button>
           </li>
         ))}
