@@ -10,6 +10,8 @@ import { TutorProvider } from './context/tutorescontext';
 import { AlunosProvider } from './context/alunoscontext';
 import BuscarTutor from './pages/aluno/buscartutor';
 import UserProfile from './pages/profile';
+import './main.css'
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -3,7 +3,7 @@ import './AccountSettings.css'
 
 const AccountSettings = () => {
   return (
-    <div>AccountSettings</div>
+    <div className='accountsettings'>AccountSettings</div>
   )
 }
 
