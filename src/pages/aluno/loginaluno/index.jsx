@@ -16,8 +16,8 @@ function Login() {
         tipoUsuario: "aluno",
       });
 
-      if (response.status = (200)) {
-        navigate("/profile");
+      if ((response.status = 200)) {
+        navigate("/profile/accountsettings");
       } else {
         alert("Credenciais inválidas!");
       }
