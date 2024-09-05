@@ -2,3 +2,34 @@
     text-decoration: none;
     color: inherit;
 }
+
+.mainhead1{
+    color:aqua;
+    font-size:30px;
+    font-weight: 300;
+    padding: 5px 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 400px;
+    margin-left: 20px;
+    margin-bottom: 15px;
+    margin-top: -5px;
+}
+
+.form-group label{
+    margin-bottom: -5px;
+
+
+}
+
+.form button {
+    margin-left: 55px;
+    margin-bottom: 30px;
+}
