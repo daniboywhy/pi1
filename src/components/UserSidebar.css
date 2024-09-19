@@ -31,3 +31,66 @@
     cursor: pointer;
     color: grey;
 }
+
+/* src/components/UserSidebar.css */
+.user-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+  }
+  
+  .sidebar-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 100%;
+  }
+  
+  .sidebar-item.active {
+    background-color: #e7f3ff;
+    border-left: 4px solid #0d6efd;
+  }
+  
+  .stylenone {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .s1 {
+    display: flex;
+    align-items: center;
+  }
+  
+  .size-6 {
+    height: 24px;
+    width: 23px;
+    margin-right: 10px;
+  }
+  
+  .delete-account {
+    margin-top: auto; /* Empurra o botão para o final da sidebar */
+  }
+  
+  .delete-button {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    padding: 10px;
+    border: none;
+    background-color: #ff4d4d;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .delete-button svg {
+    margin-right: 8px;
+  }
+  
+  .delete-button:hover {
+    background-color: #ff1a1a;
+  }
+  

@@ -5,7 +5,7 @@ import './style.css'
 function Register() {
   return (
     <div className='container'>
-      <h1>Bem-vindo ao Sistema</h1>
+      <h1>Faça seu Cadastro</h1>
       <p>Você deseja se cadastrar como aluno ou professor?</p>
       <nav>
         <ul>

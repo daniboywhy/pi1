@@ -5,6 +5,7 @@ import AccountSettings from '../../components/AccountSettings.jsx'
 import ChangePassword from '../../components/ChangePassword.jsx'
 import './style.css'
 
+
 const UserProfile = () => {
     const {activepage} = useParams()
   return (

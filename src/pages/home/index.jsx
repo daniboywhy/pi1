@@ -16,9 +16,6 @@ function Home() {
           <li>
             <Link to="/register">Cadastro</Link> {/* Link para a nova página de cadastro */}
           </li>
-          <li>
-            <Link to="/profile">Perfil</Link>
-          </li>
         </ul>
       </nav>
     </div>

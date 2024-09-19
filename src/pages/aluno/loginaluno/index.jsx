@@ -1,9 +1,9 @@
 import api from "../../../services/api";
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Importar Link para navegação
 import "./style.css";
 
-function Login() {
+function LoginAluno() {
   const inputEmail = useRef();
   const inputSenha = useRef();
   const navigate = useNavigate();
@@ -16,7 +16,8 @@ function Login() {
         tipoUsuario: "aluno",
       });
 
-      if ((response.status = 200)) {
+      if (response.status === 200) {
+        localStorage.setItem('authToken', response.data);
         navigate("/profile/accountsettings");
       } else {
         alert("Credenciais inválidas!");
@@ -33,8 +34,15 @@ function Login() {
       <input ref={inputEmail} placeholder="E-mail" />
       <input ref={inputSenha} placeholder="Senha" type="password" />
       <button onClick={handleLogin}>Entrar</button>
+      
+      {/* Botão de Recuperar Senha */}
+      <div className="forgot-password">
+        <Link to="/recover-password" className="forgot-password-link">
+          Esqueceu sua senha?
+        </Link>
+      </div>
     </div>
   );
 }
 
-export default Login;
+export default LoginAluno;
