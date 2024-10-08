@@ -20,9 +20,11 @@ function AccountSettings() {
     async function fetchUserData() {
       try {
         const token = localStorage.getItem("authToken"); // Obter o token de autenticação
+        console.log(token)
         const response = await axios.get("/api/user/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log(response)
         // Atualizar o estado com os dados do usuário
         setUserData({
           name: response.data.name,
@@ -66,7 +68,7 @@ function AccountSettings() {
 
   return (
     <div className="accountsettings">
-      <h1 className="mainhead1">Personal Information</h1>
+      <h1 className="mainhead1">Informação pessoal</h1>
 
       <div className="form">
         <div className="form-group">
@@ -105,7 +107,7 @@ function AccountSettings() {
             onChange={handleInputChange}
           />
         </div>
-        <button className="mainbutton1">Save Changes</button>
+        <button className="mainbutton1">Salvar mudanças</button>
       </div>
     </div>
   );
