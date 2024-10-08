@@ -12,7 +12,7 @@ function LoginTutor() {
     try {
       const response = await api.post("/login", {
         email: inputEmail.current.value,
-        password: inputSenha.current.value,
+        senha: inputSenha.current.value,
         tipoUsuario: "tutor",
       });
 

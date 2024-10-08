@@ -39,8 +39,8 @@ function RegisterTutor() {
         email: inputEmail.current.value,  // Novo campo adicionado
         cpf: inputCpf.current.value,
         usuario: inputUser.current.value,
-        name: inputName.current.value,
-        password: inputSenha.current.value,
+        nome: inputName.current.value,
+        senha: inputSenha.current.value,
         tipoUsuario: "tutor"
       };
 
