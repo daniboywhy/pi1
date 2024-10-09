@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./UserSidebar.css";
 import { Link } from "react-router-dom";
+import api from "../services/api";
 
 const UserSidebar = ({ activepage }) => {
   const [userData, setUserData] = useState({
@@ -13,7 +14,7 @@ const UserSidebar = ({ activepage }) => {
     async function fetchUserData() {
       try {
         const token = localStorage.getItem("authToken"); // Obter o token de autenticação
-        const response = await axios.get("/api/user/me", {
+        const response = await api.get("/api/user/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Atualizar o estado com os dados do usuário
@@ -33,7 +34,6 @@ const UserSidebar = ({ activepage }) => {
   async function deleteUsers(id) {
     try {
       await api.delete(`/aluno/${id}`);
-      getUsers(); // Atualiza a lista de usuários
 
       removerAluno(id);
     } catch (error) {

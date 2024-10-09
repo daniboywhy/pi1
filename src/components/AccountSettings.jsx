@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./AccountSettings.css";
 import axios from "axios";
+import api from "../services/api";
 
 function AccountSettings() {
   // Estado para armazenar os dados do usuário
   const [userData, setUserData] = useState({
-    name: "",
+    nome: "",
     email: "",
     cpf: "",
   });
@@ -21,13 +22,13 @@ function AccountSettings() {
       try {
         const token = localStorage.getItem("authToken"); // Obter o token de autenticação
         console.log(token)
-        const response = await axios.get("/api/user/me", {
+        const response = await api.get("/api/user/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log(response)
         // Atualizar o estado com os dados do usuário
         setUserData({
-          name: response.data.name,
+          nome: response.data.nome,
           email: response.data.email,
           cpf: response.data.cpf,
         });
@@ -54,7 +55,7 @@ function AccountSettings() {
   const handleSaveChanges = async () => {
     try {
       const token = localStorage.getItem("authToken"); // Obter o token novamente
-      await axios.put("/api/user/update", userData, {
+      await api.put("/api/user/update", userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Informações atualizadas com sucesso!");
@@ -79,7 +80,7 @@ function AccountSettings() {
             type="text"
             name="nome"
             id="nome"
-            value={userData.name}
+            value={userData.nome}
             onChange={handleInputChange}
           />
         </div>
@@ -107,10 +108,12 @@ function AccountSettings() {
             onChange={handleInputChange}
           />
         </div>
-        <button className="mainbutton1">Salvar mudanças</button>
+        <button onClick={handleSaveChanges} className="mainbutton1">Salvar mudanças</button>
       </div>
     </div>
   );
 }
+
+
 
 export default AccountSettings;
