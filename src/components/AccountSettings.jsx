@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./AccountSettings.css";
-import axios from "axios";
 import api from "../services/api";
 
 function AccountSettings() {

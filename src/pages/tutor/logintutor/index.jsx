@@ -17,6 +17,7 @@ function LoginTutor() {
       });
 
       if ((response.status = 200)) {
+        localStorage.setItem('authToken', response.data);
         navigate("/profile/accountsettings");
       } else {
         alert("Credenciais inválidas!");
