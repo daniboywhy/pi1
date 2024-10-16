@@ -107,7 +107,7 @@ function AccountSettings() {
             onChange={handleInputChange}
           />
         </div>
-        <button onClick={handleSaveChanges} className="mainbutton1">Salvar mudanças</button>
+        <button onClick={handleSaveChanges} className="accountsettingsbutton">Salvar mudanças</button>
       </div>
     </div>
   );

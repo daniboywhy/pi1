@@ -36,6 +36,10 @@
     margin-top: 10px;
   }
   
+  .loginbutton {
+    width: 16%;
+  }
+
   button {
     height: 45px;
     border-radius: 4px;

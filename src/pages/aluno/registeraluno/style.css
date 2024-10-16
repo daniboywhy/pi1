@@ -43,6 +43,7 @@ body {
   
   button {
     height: 45px;
+    width: 100%;
     border-radius: 8px;
     background-color: #61dafb;
     color: #282c34;

@@ -33,7 +33,7 @@ function LoginAluno() {
       <h1>Login</h1>
       <input ref={inputEmail} placeholder="E-mail" />
       <input ref={inputSenha} placeholder="Senha" type="password" />
-      <button onClick={handleLogin}>Entrar</button>
+      <button className="loginbutton" onClick={handleLogin}>Entrar</button>
       
       {/* Botão de Recuperar Senha */}
       <div className="forgot-password">

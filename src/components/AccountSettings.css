@@ -1,7 +1,11 @@
-.mainbutton1 {
-    width: 300px;
-    background-color: #00bfff;
-    color: white;
-    border: none;
-    cursor: pointer;
+.accountsettings {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: fit-content;
   }
+
+.accountsettings button {
+  margin-left: 20px;
+  width: 210px;
+}
