@@ -3,9 +3,37 @@
   flex-direction: column;
   align-items: flex-start;
   height: fit-content;
+  padding-bottom: 20px;
   }
+
+#botaoDisc {
+  width: 60px;
+  height: 30px;
+  margin-top: 0;
+  margin-left: 0;
+  padding: 1px;
+  background-color: red;
+}
 
 .accountsettings button {
   margin-left: 20px;
   width: 210px;
+  color: #333;
+  background-color: rgb(0, 174, 255);;
+}
+
+.tabeladisciplinas {
+  margin-left: 20px;
+  margin-bottom: 25px;
+  
+
+}
+
+table, th, td {
+  border: 1px solid;
+}
+
+th {
+  padding-left: 5px;
+  padding-right: 5px;
 }
