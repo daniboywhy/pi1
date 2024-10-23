@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./UserSidebar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Substituir useHistory por useNavigate
 import api from "../services/api";
 
 const UserSidebar = ({ activepage }) => {
   const [userData, setUserData] = useState({
+    id: "",
     name: "",
     email: "",
     cpf: "",
+    tipoUsuario: ""
   });
+
+  const navigate = useNavigate(); // Substituir useHistory por useNavigate
 
   useEffect(() => {
     async function fetchUserData() {
@@ -23,19 +27,29 @@ const UserSidebar = ({ activepage }) => {
           name: response.data.name,
           email: response.data.email,
           cpf: response.data.cpf,
+          tipoUsuario: response.data.tipoUsuario
         });
-        setLoading(false);
-      } catch (err) {}
+      } catch (err) {
+        console.error("Erro ao buscar informações do usuário:", err);
+      }
     }
 
     fetchUserData();
   }, []); // Rodar apenas uma vez, quando o componente for montado
 
-  async function deleteUsers(id) {
+  async function deleteUsers(tipo, id) {
     try {
-      await api.delete(`/aluno/${id}`);
+      await api.delete(`/${tipo}/${id}`); // Deleta o usuário com base no tipo (aluno/professor)
+      
+      // Exibe mensagem de sucesso e redireciona para a página de login
+      alert("Conta excluída com sucesso! Redirecionando para a página de login.");
+      
+      // Limpa o token de autenticação do localStorage
+      localStorage.removeItem("authToken");
 
-      removerAluno(id);
+      // Redireciona para a página de login
+      navigate("/login"); // Substituir history.push por navigate
+      
     } catch (error) {
       console.error("Erro ao deletar usuário:", error);
       alert("Erro ao deletar usuário!");
@@ -124,19 +138,33 @@ const UserSidebar = ({ activepage }) => {
       )}
       {activepage === "disciplinas" ? (
         <div className="s2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-backpack4" viewBox="0 0 16 16">
-  <path d="M4 9.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm1 .5v3h6v-3h-1v.5a.5.5 0 0 1-1 0V10z"/>
-  <path d="M8 0a2 2 0 0 0-2 2H3.5a2 2 0 0 0-2 2v1c0 .52.198.993.523 1.349A.5.5 0 0 0 2 6.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5a.5.5 0 0 0-.023-.151c.325-.356.523-.83.523-1.349V4a2 2 0 0 0-2-2H10a2 2 0 0 0-2-2m0 1a1 1 0 0 0-1 1h2a1 1 0 0 0-1-1M3 14V6.937q.24.062.5.063h4v.5a.5.5 0 0 0 1 0V7h4q.26 0 .5-.063V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1m9.5-11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
-</svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-backpack4"
+            viewBox="0 0 16 16"
+          >
+            <path d="M4 9.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm1 .5v3h6v-3h-1v.5a.5.5 0 0 1-1 0V10z" />
+            <path d="M8 0a2 2 0 0 0-2 2H3.5a2 2 0 0 0-2 2v1c0 .52.198.993.523 1.349A.5.5 0 0 0 2 6.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5a.5.5 0 0 0-.023-.151c.325-.356.523-.83.523-1.349V4a2 2 0 0 0-2-2H10a2 2 0 0 0-2-2m0 1a1 1 0 0 0-1 1h2a1 1 0 0 0-1-1M3 14V6.937q.24.062.5.063h4v.5a.5.5 0 0 0 1 0V7h4q.26 0 .5-.063V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1m9.5-11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+          </svg>
           <span>Disciplinas</span>
         </div>
       ) : (
         <Link to="/profile/disciplinas" className="stylenone">
           <div className="s1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-backpack4" viewBox="0 0 16 16">
-  <path d="M4 9.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm1 .5v3h6v-3h-1v.5a.5.5 0 0 1-1 0V10z"/>
-  <path d="M8 0a2 2 0 0 0-2 2H3.5a2 2 0 0 0-2 2v1c0 .52.198.993.523 1.349A.5.5 0 0 0 2 6.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5a.5.5 0 0 0-.023-.151c.325-.356.523-.83.523-1.349V4a2 2 0 0 0-2-2H10a2 2 0 0 0-2-2m0 1a1 1 0 0 0-1 1h2a1 1 0 0 0-1-1M3 14V6.937q.24.062.5.063h4v.5a.5.5 0 0 0 1 0V7h4q.26 0 .5-.063V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1m9.5-11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
-</svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="bi bi-backpack4"
+              viewBox="0 0 16 16"
+            >
+              <path d="M4 9.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm1 .5v3h6v-3h-1v.5a.5.5 0 0 1-1 0V10z" />
+              <path d="M8 0a2 2 0 0 0-2 2H3.5a2 2 0 0 0-2 2v1c0 .52.198.993.523 1.349A.5.5 0 0 0 2 6.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5a.5.5 0 0 0-.023-.151c.325-.356.523-.83.523-1.349V4a2 2 0 0 0-2-2H10a2 2 0 0 0-2-2m0 1a1 1 0 0 0-1 1h2a1 1 0 0 0-1-1M3 14V6.937q.24.062.5.063h4v.5a.5.5 0 0 0 1 0V7h4q.26 0 .5-.063V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1m9.5-11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+            </svg>
             <span>Disciplinas</span>
           </div>
         </Link>
@@ -150,9 +178,8 @@ const UserSidebar = ({ activepage }) => {
                 "Tem certeza que deseja excluir sua conta? Essa ação é irreversível!"
               )
             ) {
-              // Lógica para deletar a conta aqui, por exemplo:
-              deleteUsers(userData.id);
-              // deleteUserAccount();
+              // Lógica para deletar a conta
+              deleteUsers(userData.tipoUsuario, userData.id);
             }
           }}
         >

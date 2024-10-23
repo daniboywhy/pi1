@@ -6,6 +6,9 @@ const Disciplinas = () => {
   const [disciplinas, setDisciplinas] = useState([]); // Definindo o estado para armazenar as disciplinas
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
+  const [editingDisciplina, setEditingDisciplina] = useState(null);
+  const [editedNome, setEditedNome] = useState('');
+  const [editedDescricao, setEditedDescricao] = useState('');
 
   // Carregar as disciplinas quando o componente for montado
   useEffect(() => {
@@ -56,6 +59,28 @@ const Disciplinas = () => {
     }
   };
 
+  const handleEditClick = (disciplina) => {
+    setEditingDisciplina(disciplina.id); // Define a disciplina a ser editada
+    setEditedNome(disciplina.nome); // Preenche o campo de edição com o nome atual
+    setEditedDescricao(disciplina.descricao); // Preenche o campo de edição com a descrição atual
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      await api.put(`/disciplina/${editingDisciplina}`, { nome: editedNome, descricao: editedDescricao }); // Endpoint para editar disciplina
+      alert('Disciplina atualizada com sucesso!');
+      setEditingDisciplina(null); // Reseta o estado de edição
+      carregarDisciplinas(); // Recarrega as disciplinas
+    } catch (error) {
+      alert('Erro ao atualizar a disciplina');
+      console.error(error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingDisciplina(null); // Sai do modo de edição
+  };
+
   return (
     <div className="accountsettings">
       <h1 className="mainhead1">Disciplinas</h1>
@@ -66,16 +91,14 @@ const Disciplinas = () => {
             <tr>
               <th>Nome</th>
               <th>Descrição</th>
-              <th>Alunos</th>
-              <th>Ações</th> {/* Adicionando a coluna Ações para os botões de exclusão */}
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             {disciplinas.map((disciplina) => (
-              <tr key={disciplina.id}> {/* Certifique-se de ter uma chave única, como 'id' */}
+              <tr key={disciplina.id}>
                 <td>{disciplina.nome}</td>
                 <td>{disciplina.descricao}</td>
-                <td>{disciplina.alunos}</td> {/* Exemplo de campo para número de alunos */}
                 <td>
                   <button
                     id="botaoDisc"
@@ -83,6 +106,13 @@ const Disciplinas = () => {
                     className="botaoDisciplina"
                   >
                     Excluir
+                  </button>
+                  <button
+                    id="botaoDiscEdit"
+                    onClick={() => handleEditClick(disciplina)}
+                    className="botaoEditar"
+                  >
+                    Editar
                   </button>
                 </td>
               </tr>
@@ -118,8 +148,37 @@ const Disciplinas = () => {
         </div>
         <button onClick={handleCreateDisciplina} className="mainbutton1">Criar disciplina</button>
       </div>
+      {editingDisciplina && (
+        <div>
+          <h2>Editar Disciplina</h2>
+          <div className="form-group">
+            <label htmlFor="editNome">
+              Nome<span>*</span>
+            </label>
+            <input
+              type="text"
+              id="editNome"
+              value={editedNome}
+              onChange={(e) => setEditedNome(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="editDescricao">
+              Descrição<span>*</span>
+            </label>
+            <input
+              type="text"
+              id="editDescricao"
+              value={editedDescricao}
+              onChange={(e) => setEditedDescricao(e.target.value)}
+            />
+          </div>
+          <button onClick={handleSaveEdit}>Salvar</button>
+          <button onClick={handleCancelEdit}>Cancelar</button>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Disciplinas;

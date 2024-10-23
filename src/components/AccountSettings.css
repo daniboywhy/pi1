@@ -13,6 +13,17 @@
   margin-left: 0;
   padding: 1px;
   background-color: red;
+  font-size: 14px;
+}
+
+#botaoDiscEdit {
+  width: 60px;
+  height: 30px;
+  margin-top: 0;
+  margin-left: 3px;
+  padding: 1px;
+  background-color: rgb(0, 119, 255);
+  font-size: 14px;
 }
 
 .accountsettings button {

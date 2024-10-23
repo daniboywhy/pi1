@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../services/api";
 
 const ChangePassword = () => {
@@ -8,9 +8,41 @@ const ChangePassword = () => {
     email: "",
     senhaAtual: "",
     novaSenha: "",
-    tipoUsuario: 'aluno',
+    tipoUsuario: "",
     confirmarNovaSenha: ""
   });
+
+  const [loading, setLoading] = useState(true); // Para mostrar um "loading" enquanto os dados são carregados
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const token = localStorage.getItem("authToken"); // Obter o token de autenticação
+        console.log(token)
+        const response = await api.get("/api/user/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log(response)
+        // Atualizar o estado com os dados do usuário
+        setUserSenha(prev => {
+
+          return {
+            ...prev,
+            tipoUsuario: response.data.tipoUsuario
+
+          }
+          
+        });
+        setLoading(false);
+      } catch (err) {
+        setError("Erro ao carregar informações do usuário.");
+        setLoading(false);
+      }
+    }
+
+    fetchUserData();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
