@@ -33,6 +33,7 @@ function AccountSettings() {
         });
         setLoading(false);
       } catch (err) {
+        console.log(err)
         setError("Erro ao carregar informações do usuário.");
         setLoading(false);
       }

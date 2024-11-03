@@ -84,7 +84,6 @@ const Disciplinas = () => {
   return (
     <div className="accountsettings">
       <h1 className="mainhead1">Disciplinas</h1>
-
       <div className="tabeladisciplinas">
         <table>
           <thead>
@@ -150,7 +149,7 @@ const Disciplinas = () => {
       </div>
       {editingDisciplina && (
         <div>
-          <h2>Editar Disciplina</h2>
+          <h1 className="mainhead1">Editar Disciplina</h1>
           <div className="form-group">
             <label htmlFor="editNome">
               Nome<span>*</span>
