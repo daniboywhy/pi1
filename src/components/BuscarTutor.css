@@ -1,0 +1,44 @@
+
+.tutor-list-container {
+    padding: 20px;
+  }
+  
+  .tutor-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+  
+  .tutor-card {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tutor-card h3 {
+    margin-bottom: 10px;
+  }
+  
+  .disciplinas {
+    margin-top: 10px;
+  }
+  
+  .disciplina-item {
+    margin-bottom: 10px;
+  }
+  
+  .ingressar-button {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .ingressar-button:hover {
+    background-color: #0056b3;
+  }
+  
