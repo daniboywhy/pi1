@@ -11,6 +11,7 @@ const ChangePassword = () => {
     tipoUsuario: "",
     confirmarNovaSenha: ""
   });
+  
 
   const [loading, setLoading] = useState(true); // Para mostrar um "loading" enquanto os dados são carregados
   const [error, setError] = useState(null);

@@ -5,7 +5,7 @@ import AccountSettings from '../../components/AccountSettings.jsx'
 import ChangePassword from '../../components/ChangePassword.jsx'
 import './style.css'
 import Disciplinas from '../../components/Disciplinas.jsx'
-import ListarTutor from '../../components/BuscarTutor.jsx'
+import BuscarTutor from '../../components/BuscarTutor.jsx'
 
 const UserProfile = () => {
     const {activepage} = useParams()
@@ -19,7 +19,7 @@ const UserProfile = () => {
             {activepage === 'accountsettings' && <AccountSettings/>}
             {activepage === 'changepassword' && <ChangePassword/>}
             {activepage === 'disciplinas' && <Disciplinas/>}
-            {activepage === 'listartutor' && <ListarTutor/>}
+            {activepage === 'buscartutor' && <BuscarTutor/>}
 
         </div>
     </div>

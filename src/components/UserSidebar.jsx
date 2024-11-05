@@ -169,7 +169,7 @@ const UserSidebar = ({ activepage }) => {
           </div>
         </Link>
       )}
-      {activepage === "BuscarTutor" ? (
+      {activepage === "buscartutor" ? (
         <div className="s2">
           <svg
             xmlns="http://www.w3.org/2000/svg"

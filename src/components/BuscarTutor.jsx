@@ -1,16 +1,29 @@
-// TutorList.jsx
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import './BuscarTutor.css'; // Supondo que os estilos venham daqui
+import './BuscarTutor.css';
 
 const ListarTutor = ({ alunoId }) => {
   const [tutores, setTutores] = useState([]);
+  const [aluno, setAluno] = useState([]);
 
   useEffect(() => {
+    const fetchAluno = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await api.get("/api/user/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAluno(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar aluno:', error);
+      }
+    };
+    
     // Função para buscar os tutores e suas disciplinas
     const fetchTutores = async () => {
       try {
-        const response = await api.get('/tutor'); 
+        const response = await api.get('/tutor');
         setTutores(response.data);
       } catch (error) {
         console.error('Erro ao buscar tutores:', error);
@@ -18,15 +31,16 @@ const ListarTutor = ({ alunoId }) => {
     };
 
     // Chama a função fetchTutores uma vez
+    fetchAluno();
     fetchTutores();
   }, []);
 
-  const handleIngressar = async (tutorId, disciplinaId) => {
+  const handleIngressar = async (tutorId, disciplina) => {
     try {
-      await api.post('/api/turma', {
+      await api.post('/turma', {
         tutorId,
-        disciplinaId,
-        alunoId, // Usa o alunoId passado como prop
+        disciplina,
+        alunoId: aluno.id
       });
       alert('Ingressou na disciplina com sucesso!');
     } catch (error) {
@@ -43,11 +57,11 @@ const ListarTutor = ({ alunoId }) => {
           <div className="tutor-card" key={tutor.id}>
             <h3>{tutor.nome}</h3>
             <div className="disciplinas">
-              {tutor.turmas.map((turma) => (
-                <div key={turma.id} className="disciplina-item">
-                  <span>{turma.disciplina.nome}</span>
+              {tutor.disciplinas && tutor.disciplinas.map((disciplina, index) => (
+                <div key={index} className="disciplina-item">
+                  <span>{disciplina}</span>
                   <button
-                    onClick={() => handleIngressar(tutor.id, turma.disciplina.id)}
+                    onClick={() => handleIngressar(tutor.id, toString({disciplina}))}
                     className="ingressar-button"
                   >
                     Ingressar nessa disciplina
