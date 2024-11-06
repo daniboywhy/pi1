@@ -35,11 +35,11 @@ const ListarTutor = ({ alunoId }) => {
     fetchTutores();
   }, []);
 
-  const handleIngressar = async (tutorId, disciplina) => {
+  const handleIngressar = async (tutorId, disciplinaId) => {
     try {
       await api.post('/turma', {
         tutorId,
-        disciplina,
+        disciplinaId,
         alunoId: aluno.id
       });
       alert('Ingressou na disciplina com sucesso!');
@@ -50,22 +50,39 @@ const ListarTutor = ({ alunoId }) => {
   };
 
   return (
-    <div>
-      <h1>Lista de Professores e Disciplinas</h1>
-      <ul>
-        {tutores.map((tutor) => (
-          <li key={tutor.id}>++++++++
-            <strong>{tutor.nome}</strong>
-            <ul>
-              {tutor.disciplinas.map((disciplina, index) => (
-                <li key={index}>{disciplina.nome}</li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  <div>
+    <h1>Lista de Professores e Disciplinas</h1>
+    <table border="1" cellPadding="10" cellSpacing="0">
+  <thead>
+    <tr>
+      <th>Nome do Professor</th>
+      <th>Disciplinas Ministradas</th>
+    </tr>
+  </thead>
+  <tbody>
+    {tutores.map((tutor) => (
+      <tr key={tutor.id}>
+        <td><strong>{tutor.nome}</strong></td>
+        <td>
+          <ul>
+            {tutor.disciplinas.map((disciplina, index) => (
+              <li key={index}>
+                {disciplina.nome}
+                <button 
+                  onClick={() => handleIngressar(tutor.id, tutor.disciplinaIDs[index])} 
+                  style={{ marginLeft: '10px' }}
+                >
+                  Ingressar
+                </button>
+              </li>
+            ))}
+          </ul>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+  </div>);
 };
 
 export default ListarTutor;
