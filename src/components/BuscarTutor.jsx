@@ -4,7 +4,7 @@ import './BuscarTutor.css';
 
 const ListarTutor = ({ alunoId }) => {
   const [aluno, setAluno] = useState([]);
-  const [turmas, setTurmas] = useState([]);
+  const [tutores, setTutores] = useState([]);
 
   useEffect(() => {
     const fetchAluno = async () => {
@@ -21,10 +21,10 @@ const ListarTutor = ({ alunoId }) => {
     };
     
     // Função para buscar os tutores e suas disciplinas
-    const fetchTurmas = async () => {
+    const fetchTutores = async () => {
     try {
-      const response = await api.get('/turma');
-      setTurmas(response.data);
+      const response = await api.get('/tutordisciplinas');
+      setTutores(response.data);
     } catch (error) {
       console.error('Erro ao buscar turmas:', error);
     }
@@ -32,7 +32,7 @@ const ListarTutor = ({ alunoId }) => {
 
     // Chama a função fetchTutores uma vez
     fetchAluno();
-    fetchTurmas();
+    fetchTutores();
   }, []);
 
   const handleIngressar = async (tutorId, disciplina) => {
@@ -49,30 +49,23 @@ const ListarTutor = ({ alunoId }) => {
     }
   };
 
-  return (<p>oi</p>
-    /*<div className="tutor-list-container">
-      <h2>Lista de Professores</h2>
-      <div className="tutor-grid">
-        {turmas.map((turma) => (
-          <div className="tutor-card" key={turma.tutor.id}>
-            <h3>{turma.tutor.nome}</h3>
-            <div className="disciplinas">
-              {tutor.disciplinas && tutor.disciplinas.map((disciplina, index) => (
-                <div key={index} className="disciplina-item">
-                  <span>{disciplina}</span>
-                  <button
-                    onClick={() => handleIngressar(tutor.id, toString({disciplina}))}
-                    className="ingressar-button"
-                  >
-                    Ingressar nessa disciplina
-                  </button>
-                </div>
+  return (
+    <div>
+      <h1>Lista de Professores e Disciplinas</h1>
+      <ul>
+        {tutores.map((tutor) => (
+          <li key={tutor.id}>++++++++
+            <strong>{tutor.nome}</strong>
+            <ul>
+              {tutor.disciplinas.map((disciplina, index) => (
+                <li key={index}>{disciplina.nome}</li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </li>
         ))}
-      </div>
-    </div>*/);
+      </ul>
+    </div>
+  );
 };
 
 export default ListarTutor;

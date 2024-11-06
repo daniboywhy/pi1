@@ -3,15 +3,15 @@ import "./AccountSettings.css";
 import api from "../services/api";
 
 const Disciplinas = () => {
-  const [disciplinas, setDisciplinas] = useState([]); // Definindo o estado para armazenar as disciplinas
+  const [disciplinas, setDisciplinas] = useState([]); // Estado para armazenar as disciplinas
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [editingDisciplina, setEditingDisciplina] = useState(null);
   const [editedNome, setEditedNome] = useState('');
   const [editedDescricao, setEditedDescricao] = useState('');
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState({ tutorId: "" }); // Inicializando como um objeto com tutorId vazio
 
-  // Carregar as disciplinas quando o componente for montado
+  // Carregar os dados do usuário e as disciplinas quando o componente for montado
   useEffect(() => {
     async function fetchUserData() {
       try {
@@ -19,18 +19,18 @@ const Disciplinas = () => {
         const response = await api.get("/api/user/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        // Atualizar o estado com os dados do usuário
-        setUserData(response.data.id);
-
+  
+        console.log("Dados do usuário recebidos:", response.data); // Verificar resposta da API
+        setUserData({ tutorId: response.data.id }); // Definir o estado corretamente com tutorId
       } catch (err) {
-        console.error('erro', err)
+        console.error("Erro ao buscar dados do usuário:", err);
       }
     }
-
+  
     fetchUserData();
-    console.log(userData)
     carregarDisciplinas(); // Carrega as disciplinas ao montar o componente
   }, []);
+  
 
   const carregarDisciplinas = async () => {
     try {
@@ -44,9 +44,16 @@ const Disciplinas = () => {
   // Função para criar uma nova disciplina
   const handleCreateDisciplina = async () => {
     try {
+      // Verifica se tutorId está presente antes de prosseguir
+      if (!userData.tutorId) {
+        alert('ID do tutor não encontrado.');
+        return;
+      }
+      
       // Faz a requisição POST para criar a disciplina
-      await api.post('/disciplina', { nome, descricao, tutorId: userData.id});
+      await api.post('/disciplina', { nome, descricao, tutorId: userData.tutorId });
       alert('Disciplina criada com sucesso!');
+      
       // Limpar os campos após a criação
       setNome('');
       setDescricao('');
