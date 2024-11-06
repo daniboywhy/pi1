@@ -3,8 +3,8 @@ import api from '../services/api';
 import './BuscarTutor.css';
 
 const ListarTutor = ({ alunoId }) => {
-  const [tutores, setTutores] = useState([]);
   const [aluno, setAluno] = useState([]);
+  const [turmas, setTurmas] = useState([]);
 
   useEffect(() => {
     const fetchAluno = async () => {
@@ -21,18 +21,18 @@ const ListarTutor = ({ alunoId }) => {
     };
     
     // Função para buscar os tutores e suas disciplinas
-    const fetchTutores = async () => {
-      try {
-        const response = await api.get('/tutor');
-        setTutores(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar tutores:', error);
-      }
-    };
+    const fetchTurmas = async () => {
+    try {
+      const response = await api.get('/turma');
+      setTurmas(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar turmas:', error);
+    }
+  };
 
     // Chama a função fetchTutores uma vez
     fetchAluno();
-    fetchTutores();
+    fetchTurmas();
   }, []);
 
   const handleIngressar = async (tutorId, disciplina) => {
@@ -49,13 +49,13 @@ const ListarTutor = ({ alunoId }) => {
     }
   };
 
-  return (
-    <div className="tutor-list-container">
+  return (<p>oi</p>
+    /*<div className="tutor-list-container">
       <h2>Lista de Professores</h2>
       <div className="tutor-grid">
-        {tutores.map((tutor) => (
-          <div className="tutor-card" key={tutor.id}>
-            <h3>{tutor.nome}</h3>
+        {turmas.map((turma) => (
+          <div className="tutor-card" key={turma.tutor.id}>
+            <h3>{turma.tutor.nome}</h3>
             <div className="disciplinas">
               {tutor.disciplinas && tutor.disciplinas.map((disciplina, index) => (
                 <div key={index} className="disciplina-item">
@@ -72,8 +72,7 @@ const ListarTutor = ({ alunoId }) => {
           </div>
         ))}
       </div>
-    </div>
-  );
+    </div>*/);
 };
 
 export default ListarTutor;

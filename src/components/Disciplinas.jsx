@@ -9,9 +9,26 @@ const Disciplinas = () => {
   const [editingDisciplina, setEditingDisciplina] = useState(null);
   const [editedNome, setEditedNome] = useState('');
   const [editedDescricao, setEditedDescricao] = useState('');
+  const [userData, setUserData] = useState('');
 
   // Carregar as disciplinas quando o componente for montado
   useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const token = localStorage.getItem("authToken"); // Obter o token de autenticação
+        const response = await api.get("/api/user/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // Atualizar o estado com os dados do usuário
+        setUserData(response.data.id);
+
+      } catch (err) {
+        console.error('erro', err)
+      }
+    }
+
+    fetchUserData();
+    console.log(userData)
     carregarDisciplinas(); // Carrega as disciplinas ao montar o componente
   }, []);
 
@@ -28,7 +45,7 @@ const Disciplinas = () => {
   const handleCreateDisciplina = async () => {
     try {
       // Faz a requisição POST para criar a disciplina
-      await api.post('/disciplina', { nome, descricao });
+      await api.post('/disciplina', { nome, descricao, tutorId: userData.id});
       alert('Disciplina criada com sucesso!');
       // Limpar os campos após a criação
       setNome('');
