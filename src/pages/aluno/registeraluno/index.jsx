@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import api from '../../../services/api';
 import { useAlunos } from '../../../context/alunoscontext';
-import './style.css';
+import './registeraluno.css';
+import backgroundImage from '../../background.jpg'; 
 
 function Registeraluno() {
   const { listaAlunos, atualizarAlunos, adicionarAluno, removerAluno } = useAlunos();
@@ -27,7 +28,6 @@ function Registeraluno() {
         nome: user.nome,
         senha: user.senha
       })));
-      console.log('Data fetched:', response.data);
     } catch (error) {
       console.error('Erro ao buscar usuários:', error);
     }
@@ -45,10 +45,9 @@ function Registeraluno() {
       };
 
       await api.post('/cadastro', newUser);
-      getUsers(); // Atualiza a lista de usuários
-
+      getUsers();
       adicionarAluno({
-        id: newUser.usuario,  // ou algum outro identificador único
+        id: newUser.usuario,
         email: newUser.email,
         cpf: newUser.cpf,
         usuario: newUser.usuario,
@@ -65,10 +64,8 @@ function Registeraluno() {
   async function deleteUsers(id) {
     try {
       await api.delete(`/aluno/${id}`);
-      getUsers(); // Atualiza a lista de usuários
-
+      getUsers();
       removerAluno(id);
-
     } catch (error) {
       console.error('Erro ao deletar usuário:', error);
       alert('Erro ao deletar usuário!');
@@ -76,27 +73,19 @@ function Registeraluno() {
   }
 
   return (
-    <div className="container">
-      <h1>Cadastro Aluno</h1>
-      <form>
-        <input ref={inputName} placeholder="Nome" />
-        <input ref={inputCpf} placeholder="CPF" />
-        <input ref={inputEmail} placeholder="E-mail" />
-        <input ref={inputUser} placeholder="Usuário" />
-        <input ref={inputSenha} placeholder="Senha" type="password" />
-        <button type="button" onClick={createUsers}>Registrar</button>
+    <div 
+      className="register-container" 
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
+      <form className="register-form">
+        <h1 className="register-title">Cadastro Aluno</h1>
+        <input ref={inputName} className="register-input" placeholder="Nome" />
+        <input ref={inputCpf} className="register-input" placeholder="CPF" />
+        <input ref={inputEmail} className="register-input" placeholder="E-mail" />
+        <input ref={inputUser} className="register-input" placeholder="Usuário" />
+        <input ref={inputSenha} className="register-input" placeholder="Senha" type="password" />
+        <button type="button" className="register-button" onClick={createUsers}>Registrar</button>
       </form>
-
-      <h2>Alunos Registrados:</h2>
-      <ul>
-        {listaAlunos.map((user) => (
-          <li key={user.id} className="card">
-            <p>{user.nome}</p>
-            <p>{user.cpf}</p>
-            <button onClick={() => deleteUsers(user.id)}>Deletar</button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import api from "../../../services/api";
 import React, { useRef } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Importar Link para navegação
-import "./style.css";
+import { useNavigate, Link } from "react-router-dom";
+import backgroundImage from '../../background.jpg';
+import "./logintutor.css";
 
 function LoginTutor() {
   const inputEmail = useRef();
@@ -16,7 +17,7 @@ function LoginTutor() {
         tipoUsuario: "tutor",
       });
 
-      if ((response.status = 200)) {
+      if (response.status === 200) {
         localStorage.setItem('authToken', response.data);
         navigate("/profile/accountsettings");
       } else {
@@ -29,20 +30,20 @@ function LoginTutor() {
   }
 
   return (
-    <div className="container">
-      <h1>Login</h1>
-      <input ref={inputEmail} placeholder="E-mail" />
-      <input ref={inputSenha} placeholder="Senha" type="password" />
-      <button onClick={handleLogin}>Entrar</button>
+    <div className="bg-img" style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <div className="container">
+        <h1>Login</h1>
+        <input ref={inputEmail} className="login-input" placeholder="E-mail" />
+        <input ref={inputSenha} className="login-input" placeholder="Senha" type="password" />
+        <button className="loginbutton" onClick={handleLogin}>Entrar</button>
 
-      <div className="forgot-password">
-        <Link to="/recover-password" className="forgot-password-link">
-          Esqueceu sua senha?
-        </Link>
+        <div className="forgot-password">
+          <Link to="/recover-password" className="forgot-password-link">
+            Esqueceu sua senha?
+          </Link>
+        </div>
       </div>
-      
     </div>
-    
   );
 }
 

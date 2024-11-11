@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./AccountSettings.css";
 import api from "../services/api";
+import backgroundImage from './background.jpg';
 
 function AccountSettings() {
   // Estado para armazenar os dados do usuário
@@ -68,7 +69,7 @@ function AccountSettings() {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="accountsettings">
+    <div className="accountsettings" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <h1 className="mainhead1">Informação pessoal</h1>
 
       <div className="form">

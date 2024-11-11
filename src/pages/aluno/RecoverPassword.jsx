@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import backgroundImage from '../background.jpg'; 
+import "./recoverpassword.css";
 
 function RecoverPassword() {
   const [email, setEmail] = useState("");
@@ -23,15 +25,17 @@ function RecoverPassword() {
   }
 
   return (
-    <div className="container">
-      <h1>Recuperar Senha</h1>
-      <input
-        type="email"
-        placeholder="Digite seu e-mail"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button onClick={handlePasswordRecovery}>Enviar</button>
+    <div className="bg-img" style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <div className="container">
+        <h1>Recuperar Senha</h1>
+        <input
+          type="email"
+          placeholder="Digite seu e-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button onClick={handlePasswordRecovery}>Enviar</button>
+      </div>
     </div>
   );
 }

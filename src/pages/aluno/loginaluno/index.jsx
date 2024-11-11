@@ -1,7 +1,8 @@
 import api from "../../../services/api";
 import React, { useRef } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Importar Link para navegação
-import "./style.css";
+import { useNavigate, Link } from "react-router-dom";
+import backgroundImage from '../../background.jpg';
+import "./loginaluno.css";
 
 function LoginAluno() {
   const inputEmail = useRef();
@@ -17,7 +18,7 @@ function LoginAluno() {
       });
 
       if (response.status === 200) {
-        localStorage.setItem('authToken', response.data);
+        localStorage.setItem("authToken", response.data);
         navigate("/profile/accountsettings");
       } else {
         alert("Credenciais inválidas!");
@@ -29,17 +30,19 @@ function LoginAluno() {
   }
 
   return (
-    <div className="container">
-      <h1>Login</h1>
-      <input ref={inputEmail} placeholder="E-mail" />
-      <input ref={inputSenha} placeholder="Senha" type="password" />
-      <button className="loginbutton" onClick={handleLogin}>Entrar</button>
-      
-      {/* Botão de Recuperar Senha */}
-      <div className="forgot-password">
-        <Link to="/recover-password" className="forgot-password-link">
-          Esqueceu sua senha?
-        </Link>
+    <div className="bg-img" style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <div className="container">
+        <h1>Login Aluno</h1>
+        <input ref={inputEmail} className="login-input" placeholder="E-mail" />
+        <input ref={inputSenha} className="login-input" placeholder="Senha" type="password" />
+        <button className="loginbutton" onClick={handleLogin}>Entrar</button>
+        
+        {/* Botão de Recuperar Senha */}
+        <div className="forgot-password">
+          <Link to="/recover-password" className="forgot-password-link">
+            Esqueceu sua senha?
+          </Link>
+        </div>
       </div>
     </div>
   );
