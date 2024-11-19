@@ -11,7 +11,7 @@ const Disciplinas = () => {
   const [editedDescricao, setEditedDescricao] = useState('');
   const [userData, setUserData] = useState({ tutorId: "" }); // Inicializando como um objeto com tutorId vazio
 
-  // Carregar os dados do usuário e as disciplinas quando o componente for montado
+  // Carregar os dados do usuário quando o componente for montado
   useEffect(() => {
     async function fetchUserData() {
       try {
@@ -26,15 +26,20 @@ const Disciplinas = () => {
         console.error("Erro ao buscar dados do usuário:", err);
       }
     }
-  
-    fetchUserData();
-    carregarDisciplinas(); // Carrega as disciplinas ao montar o componente
-  }, []);
-  
 
-  const carregarDisciplinas = async () => {
+    fetchUserData();
+  }, []); // Executa apenas na montagem do componente
+
+  // Observar quando `userData.tutorId` muda para carregar as disciplinas
+  useEffect(() => {
+    if (userData.tutorId) {
+      carregarDisciplinas(userData.tutorId); // Chama carregarDisciplinas somente se o tutorId estiver definido
+    }
+  }, [userData.tutorId]); // Observa mudanças no tutorId
+
+  const carregarDisciplinas = async (id) => {
     try {
-      const response = await api.get('/disciplina'); // Substitua pelo endpoint da sua API
+      const response = await api.get(`/tutor/${id}/disciplinas`); // Substitua pelo endpoint da sua API
       setDisciplinas(response.data); // Armazena as disciplinas no estado
     } catch (error) {
       console.error('Erro ao buscar disciplinas:', error);
@@ -59,7 +64,7 @@ const Disciplinas = () => {
       setDescricao('');
 
       // Recarregar as disciplinas após a criação de uma nova
-      carregarDisciplinas();
+      carregarDisciplinas(userData.tutorId);
     } catch (error) {
       alert('Erro ao criar disciplina');
       console.error(error);
@@ -73,7 +78,7 @@ const Disciplinas = () => {
       try {
         await api.delete(`/disciplina/${id}`); // Substitua pelo endpoint da sua API para exclusão
         alert('Disciplina excluída com sucesso!');
-        carregarDisciplinas(); // Recarrega as disciplinas após a exclusão
+        carregarDisciplinas(userData.tutorId); // Recarrega as disciplinas após a exclusão
       } catch (error) {
         alert('Erro ao excluir disciplina');
         console.error(error);
@@ -94,7 +99,7 @@ const Disciplinas = () => {
       await api.put(`/disciplina/${editingDisciplina}`, { nome: editedNome, descricao: editedDescricao }); // Endpoint para editar disciplina
       alert('Disciplina atualizada com sucesso!');
       setEditingDisciplina(null); // Reseta o estado de edição
-      carregarDisciplinas(); // Recarrega as disciplinas
+      carregarDisciplinas(userData.tutorId); // Recarrega as disciplinas
     } catch (error) {
       alert('Erro ao atualizar a disciplina');
       console.error(error);
