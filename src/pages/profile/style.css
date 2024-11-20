@@ -1,29 +1,30 @@
-.userprofile{
+.userprofile {
     display: flex;
     flex-direction: column;
-
+    background-image: url('./Img_bg_dentro.jpg'); /* Caminho da imagem */
+    background-size: cover; /* Garante que a imagem cubra todo o espaço */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Evita repetição */
+    min-height: 100vh; /* Garante altura mínima para cobrir a tela */
 }
 
-.userprofilein{
+.userprofilein {
     display: flex;
     width: 100%;
     justify-content: center;
     margin-top: 10vh;
     gap: 20px;
-
 }
 
-.userprofile .userprofilein .left{
+.userprofile .userprofilein .left {
     width: 20%;
-    /*background-color: aqua;*/
     border: 1px solid rgb(207, 207, 207);
     border-radius: 5px;
     min-height: 50vh;
 }
 
-.userprofile .userprofilein .right{
+.userprofile .userprofilein .right {
     width: 60%;
-    /*background-color: aqua;*/
     border: 1px solid rgb(207, 207, 207);
     border-radius: 5px;
     min-height: 50vh;

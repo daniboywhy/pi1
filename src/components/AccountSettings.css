@@ -17,10 +17,13 @@ body {
   max-width: 500px;
   margin: 60px auto;
   padding: 20px;
-  background-color: #fff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.6); /* Fundo branco com 60% de opacidade */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Mantém a sombra */
+  border-radius: 8px; /* Bordas arredondadas */
+  backdrop-filter: blur(8px); /* Adiciona desfoque ao fundo */
+  -webkit-backdrop-filter: blur(8px); /* Compatibilidade com Safari */
 }
+
 
 .mainhead1 {
   text-align: center;
