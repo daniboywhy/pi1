@@ -31,7 +31,7 @@ const ListarTutor = ({ alunoId }) => {
         const response = await api.get('/tutordisciplinas');
         setTutores(response.data);
       } catch (error) {
-        console.error('Erro ao buscar turmas:', error);
+        console.error('Erro ao buscar tutores:', error);
       }
     };
 
@@ -56,7 +56,7 @@ const ListarTutor = ({ alunoId }) => {
         tutorId: selectedTutor,
         disciplinaId: selectedDisciplina,
         alunoId: aluno.id,
-        dataAula: selectedDate, // Envia a data selecionada
+        dataAula: selectedDate,
       });
       alert('Ingressou na disciplina com sucesso!');
       setShowModal(false);
@@ -67,40 +67,29 @@ const ListarTutor = ({ alunoId }) => {
   };
 
   return (
-    <div>
-      <h1>Lista de Professores e Disciplinas</h1>
-      <table border="1" cellPadding="10" cellSpacing="0">
-        <thead>
-          <tr>
-            <th>Nome do Professor</th>
-            <th>Disciplinas Ministradas</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tutores.map((tutor) => (
-            <tr key={tutor.id}>
-              <td>
-                <strong>{tutor.nome}</strong>
-              </td>
-              <td>
-                <ul>
-                  {tutor.disciplinas.map((disciplina, index) => (
-                    <li key={index}>
-                      {disciplina.nome}
-                      <button
-                        onClick={() => handleOpenModal(tutor.id, tutor.disciplinaIDs[index])}
-                        style={{ marginLeft: '10px' }}
-                      >
-                        Ingressar
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </td>
-            </tr>
+    <div className="tutor-grid">
+    {tutores
+    .filter((tutor) => tutor.disciplinas && tutor.disciplinas.length > 0) // Filtra tutores com disciplinas
+    .map((tutor) => (
+      <div key={tutor.id} className="tutor-card">
+        <h3>{tutor.nome}</h3>
+        <div className="disciplinas">
+          {tutor.disciplinas.map((disciplina, index) => (
+            <div key={index} className="disciplina-item">
+              {disciplina.nome}
+              <button
+                className="ingressar-button"
+                onClick={() => handleOpenModal(tutor.id, tutor.disciplinaIDs[index])}
+              >
+                Ingressar
+              </button>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
+    ))}
+    
+
 
       {/* Modal para selecionar data e hora */}
       {showModal && (
@@ -117,7 +106,7 @@ const ListarTutor = ({ alunoId }) => {
               placeholderText="Selecione data e hora"
             />
             <div style={{ marginTop: '20px' }}>
-              <button onClick={handleConfirm}>Confirmar</button>
+              <button onClick={handleConfirm} style={{ marginLeft: '10px' }}>Confirmar</button>
               <button onClick={() => setShowModal(false)} style={{ marginLeft: '10px' }}>
                 Cancelar
               </button>
