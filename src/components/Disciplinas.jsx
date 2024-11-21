@@ -71,22 +71,35 @@ const Disciplinas = () => {
     }
   };
 
-  // Função para excluir uma disciplina com confirmação
-  const deleteDisciplina = async (id) => {
+  const deleteDisciplina = async (disciplinaId) => {
     const confirmacao = window.confirm("Tem certeza que deseja excluir esta disciplina?");
-    if (confirmacao) {
-      try {
-        await api.delete(`/disciplina/${id}`); // Substitua pelo endpoint da sua API para exclusão
-        alert('Disciplina excluída com sucesso!');
-        carregarDisciplinas(userData.tutorId); // Recarrega as disciplinas após a exclusão
-      } catch (error) {
-        alert('Erro ao excluir disciplina');
-        console.error(error);
+    if (!confirmacao) {
+      alert("Exclusão cancelada");
+      return;
+    }
+  
+    try {
+      // Busque as turmas relacionadas à disciplina
+      const response = await api.get(`/turma/disciplina/${disciplinaId}`); // Substitua pelo endpoint correto da sua API
+      const turmasRelacionadas = response.data;
+  
+      // Exclua todas as turmas relacionadas
+      for (const turma of turmasRelacionadas) {
+        await api.delete(`/turma/${turma.id}`);
       }
-    } else {
-      alert('Exclusão cancelada');
+  
+      // Após excluir as turmas, exclua a disciplina
+      await api.delete(`/disciplina/${disciplinaId}`);
+      alert("Disciplina e turmas relacionadas excluídas com sucesso!");
+  
+      // Recarrega as disciplinas após a exclusão
+      carregarDisciplinas(userData.tutorId);
+    } catch (error) {
+      alert("Erro ao excluir disciplina ou turmas relacionadas");
+      console.error(error);
     }
   };
+  
 
   const handleEditClick = (disciplina) => {
     setEditingDisciplina(disciplina.id); // Define a disciplina a ser editada

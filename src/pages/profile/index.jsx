@@ -6,6 +6,8 @@ import ChangePassword from '../../components/ChangePassword.jsx'
 import './style.css'
 import Disciplinas from '../../components/Disciplinas.jsx'
 import BuscarTutor from '../../components/BuscarTutor.jsx'
+import Turmas from '../../components/MinhasTurmas.jsx'
+import MinhasDisciplinas from '../../components/AlunoTurmas.jsx'
 
 const UserProfile = () => {
     const {activepage} = useParams()
@@ -20,6 +22,8 @@ const UserProfile = () => {
             {activepage === 'changepassword' && <ChangePassword/>}
             {activepage === 'disciplinas' && <Disciplinas/>}
             {activepage === 'buscartutor' && <BuscarTutor/>}
+            {activepage === 'minhasturmas' && <Turmas/>}
+            {activepage === 'alunoturmas' && <MinhasDisciplinas/>}
 
         </div>
     </div>
