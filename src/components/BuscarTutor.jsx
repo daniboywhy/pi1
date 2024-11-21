@@ -51,14 +51,18 @@ const ListarTutor = ({ alunoId }) => {
       return;
     }
 
+    // Converte a data para string no formato local
+    const formattedDate = selectedDate.toISOString(); // Converte para o formato ISO (2024-11-20T14:30:00.000Z)
+
     try {
-      await api.post('/turma', {
+      const response = await api.post('/turma', {
         tutorId: selectedTutor,
         disciplinaId: selectedDisciplina,
         alunoId: aluno.id,
-        dataAula: selectedDate,
+        dataAula: formattedDate, // Envia a data formatada
       });
       alert('Ingressou na disciplina com sucesso!');
+      console.log('Resposta da API:', response.data); // Verificar o que está retornando
       setShowModal(false);
     } catch (error) {
       console.error('Erro ao ingressar na disciplina:', error);
@@ -68,28 +72,26 @@ const ListarTutor = ({ alunoId }) => {
 
   return (
     <div className="tutor-grid">
-    {tutores
-    .filter((tutor) => tutor.disciplinas && tutor.disciplinas.length > 0) // Filtra tutores com disciplinas
-    .map((tutor) => (
-      <div key={tutor.id} className="tutor-card">
-        <h3>{tutor.nome}</h3>
-        <div className="disciplinas">
-          {tutor.disciplinas.map((disciplina, index) => (
-            <div key={index} className="disciplina-item">
-              {disciplina.nome}
-              <button
-                className="ingressar-button"
-                onClick={() => handleOpenModal(tutor.id, tutor.disciplinaIDs[index])}
-              >
-                Ingressar
-              </button>
+      {tutores
+        .filter((tutor) => tutor.disciplinas && tutor.disciplinas.length > 0) // Filtra tutores com disciplinas
+        .map((tutor) => (
+          <div key={tutor.id} className="tutor-card">
+            <h3>{tutor.nome}</h3>
+            <div className="disciplinas">
+              {tutor.disciplinas.map((disciplina, index) => (
+                <div key={index} className="disciplina-item">
+                  {disciplina.nome}
+                  <button
+                    className="ingressar-button"
+                    onClick={() => handleOpenModal(tutor.id, tutor.disciplinaIDs[index])}
+                  >
+                    Ingressar
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-    ))}
-    
-
+          </div>
+        ))}
 
       {/* Modal para selecionar data e hora */}
       {showModal && (
@@ -102,11 +104,11 @@ const ListarTutor = ({ alunoId }) => {
               showTimeSelect
               timeFormat="HH:mm"
               timeIntervals={15}
-              dateFormat="Pp"
+              dateFormat="yyyy-MM-dd HH:mm:ss" // Formato mais legível
               placeholderText="Selecione data e hora"
             />
             <div style={{ marginTop: '20px' }}>
-              <button onClick={handleConfirm} style={{ marginLeft: '10px' }}>Confirmar</button>
+              <button onClick={handleConfirm}>Confirmar</button>
               <button onClick={() => setShowModal(false)} style={{ marginLeft: '10px' }}>
                 Cancelar
               </button>

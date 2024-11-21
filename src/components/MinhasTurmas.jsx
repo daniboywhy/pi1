@@ -15,7 +15,6 @@ const Turmas = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTutorId(response.data.id);
-        console.log(tutorId)
       } catch (error) {
         console.error("Erro ao buscar ID do tutor:", error);
       }
@@ -36,7 +35,6 @@ const Turmas = () => {
     try {
       const response = await api.get(`/tutor/${tutorId}/turmas-pendentes`);
       setTurmasPendentes(response.data);
-      console.log(response.data)
     } catch (error) {
       console.error("Erro ao buscar turmas pendentes:", error);
     }
@@ -63,6 +61,17 @@ const Turmas = () => {
     }
   };
 
+  const handleRecusarTurma = async (id) => {
+    try {
+      await api.delete(`/turma/${id}`); // Endpoint para deletar a turma
+      alert("Turma recusada com sucesso!");
+      fetchTurmasPendentes(); // Atualiza a tabela de pendentes
+    } catch (error) {
+      console.error("Erro ao recusar turma:", error);
+      alert("Erro ao recusar turma.");
+    }
+  };
+
   return (
     <div>
       <h1>Gestão de Turmas</h1>
@@ -84,6 +93,7 @@ const Turmas = () => {
               <td>{turma.disciplina.nome}</td>
               <td>
                 <button onClick={() => handleAprovarTurma(turma.id)}>Aprovar</button>
+                <button onClick={() => handleRecusarTurma(turma.id)}>Recusar</button>
               </td>
             </tr>
           ))}
@@ -97,6 +107,7 @@ const Turmas = () => {
           <tr>
             <th>Aluno</th>
             <th>Disciplina</th>
+            <th>Avaliação</th>
           </tr>
         </thead>
         <tbody>
@@ -104,6 +115,13 @@ const Turmas = () => {
             <tr key={turma.id}>
               <td>{turma.aluno.nome}</td>
               <td>{turma.disciplina.nome}</td>
+              <td>
+                {turma.avaliacao ? (
+                  <span>{turma.avaliacao} / 5</span> // Mostra a avaliação, se existir
+                ) : (
+                  <span>Ainda não avaliado</span>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
