@@ -1,3 +1,77 @@
 .tabeladisciplinas {
-    margin: 10px;
-}
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px; /* Espaçamento maior entre os itens */
+    justify-content: flex-start;
+    margin: 0 auto;
+  }
+  
+  .tabeladisciplinas .disciplina-item {
+    flex: 2 2 calc(32% - 30px); /* Aumenta ligeiramente a largura da caixa */
+    max-width: calc(32% - 1px); /* Ajusta o limite superior */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px; /* Mantém o espaçamento interno */
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    box-sizing: border-box; /* Garante que padding não afete o tamanho */
+  }
+  
+  .tabeladisciplinas .disciplina-item:hover {
+    transform: scale(1.03); /* Pequeno efeito de zoom ao passar o mouse */
+  }
+  
+  @media (max-width: 768px) {
+    .tabeladisciplinas .disciplina-item {
+      flex: 1 1 calc(48% - 30px); /* Ajusta para duas colunas em telas menores */
+      max-width: calc(48% - 30px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .tabeladisciplinas .disciplina-item {
+      flex: 2 2 100%; 
+      max-width: 100%;
+    }
+  }
+  
+  .botoes-acoes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Garante que os botões não saiam da caixa em telas menores */
+  }
+  
+  .tabeladisciplinas .disciplina-item button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 8px; /* Reduz o tamanho do botão */
+    font-size: 12px; /* Reduz o tamanho do texto */
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .tabeladisciplinas .disciplina-item button:hover {
+    background-color: #2980b9;
+  }
+  
+  .tabeladisciplinas .disciplina-item button.botaoEditar {
+    background-color: #f39c12;
+  }
+  
+  .tabeladisciplinas .disciplina-item button.botaoEditar:hover {
+    background-color: #e67e22;
+  }
+  
+  .form {
+    margin-top: 50px; /* Aumenta a distância entre o formulário e os cartões */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  

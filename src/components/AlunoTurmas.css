@@ -1,0 +1,65 @@
+/* Estilos para o layout baseado em grade */
+.disciplinas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adapta o layout responsivo */
+    grid-gap: 20px;
+    justify-content: center;
+    max-width: 1200px; /* Limite máximo para 6 disciplinas */
+    margin: 0 auto;
+  }
+  
+  .disciplina-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .disciplina-card h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .disciplina-card p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+  }
+  
+  .avaliacao {
+    margin-top: 15px;
+  }
+  
+  .nota {
+    font-size: 16px;
+    font-weight: bold;
+    color: #3498db;
+  }
+  
+  .estrelas {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .estrela-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .estrela-button:hover,
+  .estrela-button:focus {
+    color: #f1c40f;
+  }
+  
+  .estrela-button:active {
+    color: #e67e22;
+  }
+  
