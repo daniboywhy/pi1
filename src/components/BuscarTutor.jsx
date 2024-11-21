@@ -100,7 +100,7 @@ const ListarTutor = ({ alunoId }) => {
             <h2>Escolha uma data e hora para a aula</h2>
             <DatePicker
               selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
+              onChange={(date) => { console.log(date), setSelectedDate(date)}}
               showTimeSelect
               timeFormat="HH:mm"
               timeIntervals={15}

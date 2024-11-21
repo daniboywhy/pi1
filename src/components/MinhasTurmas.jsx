@@ -71,6 +71,22 @@ const Turmas = () => {
     }
   };
 
+  const formatarData = (dataISO) => {
+    try {
+      const data = new Date(dataISO);
+      return data.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch (error) {
+      console.error('Erro ao formatar data:', error);
+      return 'Data inválida';
+    }
+  };
+
   return (
     <div className="gestao-turmas">
       <h1>Gestão de Turmas</h1>
@@ -81,6 +97,7 @@ const Turmas = () => {
           <div key={turma.id} className="turma-item">
             <h3>Aluno: {turma.aluno.nome}</h3>
             <p>Disciplina: {turma.disciplina.nome}</p>
+            <p>Data da Aula: {turma.dataAula ? formatarData(turma.dataAula) : 'Data não definida'}</p>
             <div className="botoes-acoes">
               <button onClick={() => handleAprovarTurma(turma.id)}>Aprovar</button>
               <button onClick={() => handleRecusarTurma(turma.id)}>Recusar</button>
@@ -95,6 +112,7 @@ const Turmas = () => {
           <div key={turma.id} className="turma-item">
             <h3>Aluno: {turma.aluno.nome}</h3>
             <p>Disciplina: {turma.disciplina.nome}</p>
+            <p>Data da Aula: {turma.dataAula ? formatarData(turma.dataAula) : 'Data não definida'}</p>
             <p>
               Avaliação:{' '}
               {turma.avaliacao ? (
