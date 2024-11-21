@@ -1,0 +1,58 @@
+.gestao-turmas {
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .turmas-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: flex-start;
+  }
+  
+  .turma-item {
+    flex: 1 1 calc(32% - 30px);
+    max-width: calc(32% - 30px);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .turma-item:hover {
+    transform: scale(1.03);
+  }
+  
+  .botoes-acoes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .turma-item button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .turma-item button:hover {
+    background-color: #2980b9;
+  }
+  
+  .turma-item button:nth-child(2) {
+    background-color: #e74c3c;
+  }
+  
+  .turma-item button:nth-child(2):hover {
+    background-color: #c0392b;
+  }
+  

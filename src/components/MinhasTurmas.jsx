@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
+import './MinhasTurmas.css'; // Adicionar o CSS correspondente
 
 const Turmas = () => {
   const [turmasPendentes, setTurmasPendentes] = useState([]);
@@ -7,23 +8,21 @@ const Turmas = () => {
   const [tutorId, setTutorId] = useState('');
 
   useEffect(() => {
-    // Busca o ID do tutor logado
     async function fetchTutorId() {
       try {
-        const token = localStorage.getItem("authToken");
-        const response = await api.get("/api/user/me", {
+        const token = localStorage.getItem('authToken');
+        const response = await api.get('/api/user/me', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTutorId(response.data.id);
       } catch (error) {
-        console.error("Erro ao buscar ID do tutor:", error);
+        console.error('Erro ao buscar ID do tutor:', error);
       }
     }
 
     fetchTutorId();
   }, []);
 
-  // Carregar turmas pendentes e aprovadas
   useEffect(() => {
     if (tutorId) {
       fetchTurmasPendentes();
@@ -36,7 +35,7 @@ const Turmas = () => {
       const response = await api.get(`/tutor/${tutorId}/turmas-pendentes`);
       setTurmasPendentes(response.data);
     } catch (error) {
-      console.error("Erro ao buscar turmas pendentes:", error);
+      console.error('Erro ao buscar turmas pendentes:', error);
     }
   };
 
@@ -45,87 +44,68 @@ const Turmas = () => {
       const response = await api.get(`/tutor/${tutorId}/turmas-aprovadas`);
       setTurmasAprovadas(response.data);
     } catch (error) {
-      console.error("Erro ao buscar turmas aprovadas:", error);
+      console.error('Erro ao buscar turmas aprovadas:', error);
     }
   };
 
   const handleAprovarTurma = async (id) => {
     try {
       await api.put(`/turma/${id}/aprovar`);
-      alert("Turma aprovada com sucesso!");
-      fetchTurmasPendentes(); // Atualiza a tabela de pendentes
-      fetchTurmasAprovadas(); // Atualiza a tabela de aprovadas
+      alert('Turma aprovada com sucesso!');
+      fetchTurmasPendentes();
+      fetchTurmasAprovadas();
     } catch (error) {
-      console.error("Erro ao aprovar turma:", error);
-      alert("Erro ao aprovar turma.");
+      console.error('Erro ao aprovar turma:', error);
+      alert('Erro ao aprovar turma.');
     }
   };
 
   const handleRecusarTurma = async (id) => {
     try {
-      await api.delete(`/turma/${id}`); // Endpoint para deletar a turma
-      alert("Turma recusada com sucesso!");
-      fetchTurmasPendentes(); // Atualiza a tabela de pendentes
+      await api.delete(`/turma/${id}`);
+      alert('Turma recusada com sucesso!');
+      fetchTurmasPendentes();
     } catch (error) {
-      console.error("Erro ao recusar turma:", error);
-      alert("Erro ao recusar turma.");
+      console.error('Erro ao recusar turma:', error);
+      alert('Erro ao recusar turma.');
     }
   };
 
   return (
-    <div>
+    <div className="gestao-turmas">
       <h1>Gestão de Turmas</h1>
 
-      {/* Tabela de Turmas Pendentes */}
       <h2>Turmas Pendentes</h2>
-      <table border="1" cellPadding="10" cellSpacing="0">
-        <thead>
-          <tr>
-            <th>Aluno</th>
-            <th>Disciplina</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {turmasPendentes.map((turma) => (
-            <tr key={turma.id}>
-              <td>{turma.aluno.nome}</td>
-              <td>{turma.disciplina.nome}</td>
-              <td>
-                <button onClick={() => handleAprovarTurma(turma.id)}>Aprovar</button>
-                <button onClick={() => handleRecusarTurma(turma.id)}>Recusar</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="turmas-grid">
+        {turmasPendentes.map((turma) => (
+          <div key={turma.id} className="turma-item">
+            <h3>Aluno: {turma.aluno.nome}</h3>
+            <p>Disciplina: {turma.disciplina.nome}</p>
+            <div className="botoes-acoes">
+              <button onClick={() => handleAprovarTurma(turma.id)}>Aprovar</button>
+              <button onClick={() => handleRecusarTurma(turma.id)}>Recusar</button>
+            </div>
+          </div>
+        ))}
+      </div>
 
-      {/* Tabela de Turmas Aprovadas */}
       <h2>Turmas Aprovadas</h2>
-      <table border="1" cellPadding="10" cellSpacing="0">
-        <thead>
-          <tr>
-            <th>Aluno</th>
-            <th>Disciplina</th>
-            <th>Avaliação</th>
-          </tr>
-        </thead>
-        <tbody>
-          {turmasAprovadas.map((turma) => (
-            <tr key={turma.id}>
-              <td>{turma.aluno.nome}</td>
-              <td>{turma.disciplina.nome}</td>
-              <td>
-                {turma.avaliacao ? (
-                  <span>{turma.avaliacao} / 5</span> // Mostra a avaliação, se existir
-                ) : (
-                  <span>Ainda não avaliado</span>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="turmas-grid">
+        {turmasAprovadas.map((turma) => (
+          <div key={turma.id} className="turma-item">
+            <h3>Aluno: {turma.aluno.nome}</h3>
+            <p>Disciplina: {turma.disciplina.nome}</p>
+            <p>
+              Avaliação:{' '}
+              {turma.avaliacao ? (
+                <span>{turma.avaliacao} / 5</span>
+              ) : (
+                <span>Ainda não avaliado</span>
+              )}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
