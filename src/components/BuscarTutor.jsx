@@ -69,7 +69,7 @@ const ListarTutor = ({ alunoId }) => {
   return (
     <div className="tutor-grid">
     {tutores
-    .filter((tutor) => tutor.disciplinas && tutor.disciplinas.length > 0) // Filtra tutores com disciplinas
+    .filter((tutor) => tutor.disciplinas && tutor.disciplinas.length > 0) 
     .map((tutor) => (
       <div key={tutor.id} className="tutor-card">
         <h3>{tutor.nome}</h3>

@@ -1,201 +1,150 @@
 import React, { useEffect, useState } from "react";
-import "./AccountSettings.css";
+import "./Disciplinas.css";
 import api from "../services/api";
 
 const Disciplinas = () => {
-  const [disciplinas, setDisciplinas] = useState([]); // Estado para armazenar as disciplinas
-  const [nome, setNome] = useState('');
-  const [descricao, setDescricao] = useState('');
+  const [disciplinas, setDisciplinas] = useState([]);
+  const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [editingDisciplina, setEditingDisciplina] = useState(null);
-  const [editedNome, setEditedNome] = useState('');
-  const [editedDescricao, setEditedDescricao] = useState('');
-  const [userData, setUserData] = useState({ tutorId: "" }); // Inicializando como um objeto com tutorId vazio
+  const [editedNome, setEditedNome] = useState("");
+  const [editedDescricao, setEditedDescricao] = useState("");
+  const [userData, setUserData] = useState({ tutorId: "" });
 
-  // Carregar os dados do usuário quando o componente for montado
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const token = localStorage.getItem("authToken"); // Obter o token de autenticação
+        const token = localStorage.getItem("authToken");
         const response = await api.get("/api/user/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
-  
-        console.log("Dados do usuário recebidos:", response.data); // Verificar resposta da API
-        setUserData({ tutorId: response.data.id }); // Definir o estado corretamente com tutorId
+        setUserData({ tutorId: response.data.id });
       } catch (err) {
         console.error("Erro ao buscar dados do usuário:", err);
       }
     }
-
     fetchUserData();
-  }, []); // Executa apenas na montagem do componente
+  }, []);
 
-  // Observar quando `userData.tutorId` muda para carregar as disciplinas
   useEffect(() => {
     if (userData.tutorId) {
-      carregarDisciplinas(userData.tutorId); // Chama carregarDisciplinas somente se o tutorId estiver definido
+      carregarDisciplinas(userData.tutorId);
     }
-  }, [userData.tutorId]); // Observa mudanças no tutorId
+  }, [userData.tutorId]);
 
   const carregarDisciplinas = async (id) => {
     try {
-      const response = await api.get(`/tutor/${id}/disciplinas`); // Substitua pelo endpoint da sua API
-      setDisciplinas(response.data); // Armazena as disciplinas no estado
+      const response = await api.get(`/tutor/${id}/disciplinas`);
+      setDisciplinas(response.data);
     } catch (error) {
-      console.error('Erro ao buscar disciplinas:', error);
+      console.error("Erro ao buscar disciplinas:", error);
     }
   };
 
-  // Função para criar uma nova disciplina
   const handleCreateDisciplina = async () => {
     try {
-      // Verifica se tutorId está presente antes de prosseguir
       if (!userData.tutorId) {
-        alert('ID do tutor não encontrado.');
+        alert("ID do tutor não encontrado.");
         return;
       }
-      
-      // Faz a requisição POST para criar a disciplina
-      await api.post('/disciplina', { nome, descricao, tutorId: userData.tutorId });
-      alert('Disciplina criada com sucesso!');
-      
-      // Limpar os campos após a criação
-      setNome('');
-      setDescricao('');
-
-      // Recarregar as disciplinas após a criação de uma nova
+      await api.post("/disciplina", { nome, descricao, tutorId: userData.tutorId });
+      alert("Disciplina criada com sucesso!");
+      setNome("");
+      setDescricao("");
       carregarDisciplinas(userData.tutorId);
     } catch (error) {
-      alert('Erro ao criar disciplina');
+      alert("Erro ao criar disciplina");
       console.error(error);
     }
   };
 
   const deleteDisciplina = async (disciplinaId) => {
     const confirmacao = window.confirm("Tem certeza que deseja excluir esta disciplina?");
-    if (!confirmacao) {
-      alert("Exclusão cancelada");
-      return;
-    }
-  
+    if (!confirmacao) return;
     try {
-      // Busque as turmas relacionadas à disciplina
-      const response = await api.get(`/turma/disciplina/${disciplinaId}`); // Substitua pelo endpoint correto da sua API
-      const turmasRelacionadas = response.data;
-  
-      // Exclua todas as turmas relacionadas
-      for (const turma of turmasRelacionadas) {
-        await api.delete(`/turma/${turma.id}`);
-      }
-  
-      // Após excluir as turmas, exclua a disciplina
       await api.delete(`/disciplina/${disciplinaId}`);
-      alert("Disciplina e turmas relacionadas excluídas com sucesso!");
-  
-      // Recarrega as disciplinas após a exclusão
+      alert("Disciplina excluída com sucesso!");
       carregarDisciplinas(userData.tutorId);
     } catch (error) {
-      alert("Erro ao excluir disciplina ou turmas relacionadas");
+      alert("Erro ao excluir disciplina");
       console.error(error);
     }
   };
-  
 
   const handleEditClick = (disciplina) => {
-    setEditingDisciplina(disciplina.id); // Define a disciplina a ser editada
-    setEditedNome(disciplina.nome); // Preenche o campo de edição com o nome atual
-    setEditedDescricao(disciplina.descricao); // Preenche o campo de edição com a descrição atual
+    setEditingDisciplina(disciplina.id);
+    setEditedNome(disciplina.nome);
+    setEditedDescricao(disciplina.descricao);
   };
 
   const handleSaveEdit = async () => {
     try {
-      await api.put(`/disciplina/${editingDisciplina}`, { nome: editedNome, descricao: editedDescricao }); // Endpoint para editar disciplina
-      alert('Disciplina atualizada com sucesso!');
-      setEditingDisciplina(null); // Reseta o estado de edição
-      carregarDisciplinas(userData.tutorId); // Recarrega as disciplinas
+      await api.put(`/disciplina/${editingDisciplina}`, {
+        nome: editedNome,
+        descricao: editedDescricao,
+      });
+      alert("Disciplina atualizada com sucesso!");
+      setEditingDisciplina(null);
+      carregarDisciplinas(userData.tutorId);
     } catch (error) {
-      alert('Erro ao atualizar a disciplina');
+      alert("Erro ao atualizar a disciplina");
       console.error(error);
     }
   };
 
   const handleCancelEdit = () => {
-    setEditingDisciplina(null); // Sai do modo de edição
+    setEditingDisciplina(null);
   };
 
   return (
     <div className="accountsettings">
       <h1 className="mainhead1">Disciplinas</h1>
       <div className="tabeladisciplinas">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Descrição</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {disciplinas.map((disciplina) => (
-              <tr key={disciplina.id}>
-                <td>{disciplina.nome}</td>
-                <td>{disciplina.descricao}</td>
-                <td>
-                  <button
-                    id="botaoDisc"
-                    onClick={() => deleteDisciplina(disciplina.id)} // Chama a função com o ID da disciplina
-                    className="botaoDisciplina"
-                  >
-                    Excluir
-                  </button>
-                  <button
-                    id="botaoDiscEdit"
-                    onClick={() => handleEditClick(disciplina)}
-                    className="botaoEditar"
-                  >
-                    Editar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {disciplinas.map((disciplina) => (
+          <div key={disciplina.id} className="disciplina-item">
+            <h3>{disciplina.nome}</h3>
+            <p>{disciplina.descricao}</p>
+            <div className="botoes-acoes">
+              <button onClick={() => deleteDisciplina(disciplina.id)} className="botaoDisciplina">
+                Excluir
+              </button>
+              <button onClick={() => handleEditClick(disciplina)} className="botaoEditar">
+                Editar
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className="form">
         <div className="form-group">
-          <label htmlFor="nome">
-            Nome<span>*</span>
-          </label>
+          <label htmlFor="nome">Nome<span>*</span></label>
           <input
             type="text"
-            name="nome"
             id="nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="descricao">
-            Descrição<span>*</span>
-          </label>
+          <label htmlFor="descricao">Descrição<span>*</span></label>
           <input
             type="text"
-            name="descricao"
             id="descricao"
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
           />
         </div>
-        <button onClick={handleCreateDisciplina} className="mainbutton1">Criar disciplina</button>
+        <button onClick={handleCreateDisciplina} className="mainbutton1">
+          Criar disciplina
+        </button>
       </div>
+
       {editingDisciplina && (
         <div>
-          <h1 className="mainhead1">Editar Disciplina</h1>
+          <h1>Editar Disciplina</h1>
           <div className="form-group">
-            <label htmlFor="editNome">
-              Nome<span>*</span>
-            </label>
+            <label htmlFor="editNome">Nome<span>*</span></label>
             <input
               type="text"
               id="editNome"
@@ -204,9 +153,7 @@ const Disciplinas = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="editDescricao">
-              Descrição<span>*</span>
-            </label>
+            <label htmlFor="editDescricao">Descrição<span>*</span></label>
             <input
               type="text"
               id="editDescricao"
