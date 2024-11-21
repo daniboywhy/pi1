@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa o hook useNavigate
 import api from '../../../services/api';
 import { useTutores } from '../../../context/tutorescontext';
 import './registertutor.css';
-import backgroundImage from '../../Background.jpg'; 
+import backgroundImage from '../../Background.jpg';
 
 function RegisterTutor() {
   const { listaTutores, atualizarTutores, adicionarTutor, removerTutor } = useTutores();
+  const navigate = useNavigate(); // Instancia o hook useNavigate
 
   const inputEmail = useRef();
   const inputCpf = useRef();
@@ -57,6 +59,9 @@ function RegisterTutor() {
         senha: newTutor.senha
       });
 
+      alert('Tutor criado com sucesso!'); // Exibe o alerta
+      navigate('/login'); // Redireciona para a rota de login
+
       getTutores();
     } catch (error) {
       console.error('Erro ao criar tutor:', error);
@@ -76,7 +81,13 @@ function RegisterTutor() {
         <input ref={inputEmail} className="register-input" placeholder="E-mail" />
         <input ref={inputUser} className="register-input" placeholder="Usuário" />
         <input ref={inputSenha} className="register-input" placeholder="Senha" type="password" />
-        <button type="button" className="register-button" onClick={createTutor}>Registrar</button>
+        <button 
+          type="button" 
+          className="register-button" 
+          onClick={createTutor}
+        >
+          Registrar
+        </button>
       </form>
     </div>
   );
