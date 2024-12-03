@@ -20,7 +20,6 @@ const ListarTutor = ({ alunoId }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAluno(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error('Erro ao buscar aluno:', error);
       }
@@ -50,30 +49,58 @@ const ListarTutor = ({ alunoId }) => {
       alert('Por favor, selecione uma data e hora.');
       return;
     }
-
-    // Converte a data para string no formato local
-    const formattedDate = selectedDate.toISOString(); // Converte para o formato ISO (2024-11-20T14:30:00.000Z)
-
+  
+    const formattedDate = selectedDate.toISOString();
+  
     try {
+      // Criação da turma
       const response = await api.post('/turma', {
         tutorId: selectedTutor,
         disciplinaId: selectedDisciplina,
         alunoId: aluno.id,
-        dataAula: formattedDate, // Envia a data formatada
+        dataAula: formattedDate,
       });
-      alert('Ingressou na disciplina com sucesso!');
-      console.log('Resposta da API:', response.data); // Verificar o que está retornando
+  
+      console.log('Turma criada com sucesso:', response.data);
+  
+      // Fechar o modal
       setShowModal(false);
+  
+      // Realizar o checkout
+      handleCheckout();
     } catch (error) {
-      console.error('Erro ao ingressar na disciplina:', error);
+      console.error('Erro ao criar turma:', error);
       alert('Falha ao ingressar na disciplina.');
     }
   };
+  
+  const handleCheckout = async () => {
+    try {
+      const response = await api.post('/checkout', {
+        nome: aluno.nome, 
+        email: aluno.email,
+        valor: 1, // Valor em centavos
+      });
+  
+      console.log("URL de pagamento recebida:", response.data.url);
+  
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      } else {
+        alert('Erro ao processar o pagamento. URL não encontrada.');
+      }
+    } catch (error) {
+      console.error('Erro ao criar sessão de pagamento:', error);
+      alert('Falha ao iniciar o pagamento.');
+    }
+  };
+  
+  
 
   return (
     <div className="tutor-grid">
       {tutores
-        .filter((tutor) => tutor.disciplinas && tutor.disciplinas.length > 0) // Filtra tutores com disciplinas
+        .filter((tutor) => tutor.disciplinas && tutor.disciplinas.length > 0)
         .map((tutor) => (
           <div key={tutor.id} className="tutor-card">
             <h3>{tutor.nome}</h3>
@@ -93,18 +120,17 @@ const ListarTutor = ({ alunoId }) => {
           </div>
         ))}
 
-      {/* Modal para selecionar data e hora */}
       {showModal && (
         <div className="modal">
           <div className="modal-content">
             <h2>Escolha uma data e hora para a aula</h2>
             <DatePicker
               selected={selectedDate}
-              onChange={(date) => { console.log(date), setSelectedDate(date)}}
+              onChange={(date) => setSelectedDate(date)}
               showTimeSelect
               timeFormat="HH:mm"
               timeIntervals={15}
-              dateFormat="yyyy-MM-dd HH:mm:ss" // Formato mais legível
+              dateFormat="yyyy-MM-dd HH:mm:ss"
               placeholderText="Selecione data e hora"
             />
             <div style={{ marginTop: '20px' }}>
